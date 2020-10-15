@@ -20,7 +20,8 @@ import i5.las2peer.api.ServiceException;
 import i5.las2peer.api.logging.MonitoringEvent;
 import i5.las2peer.restMapper.RESTService;
 import i5.las2peer.restMapper.annotations.ServicePath;
-
+import i5.las2peer.services.res.database.DatabaseManager;
+import java.sql.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -50,6 +51,14 @@ import java.util.Map;
 public class Res extends RESTService {
 
 
+  /*
+   * Database configuration
+   */
+  private String jdbcDriverClassName;
+  private String jdbcLogin;
+  private String jdbcPass;
+  private String jdbcUrl;
+  private static DatabaseManager dbm;
 
 
 
@@ -57,7 +66,8 @@ public class Res extends RESTService {
 	super();
     // read and set properties values
     setFieldValues();
-    
+        // instantiate a database manager to handle database connection pooling and credentials
+    dbm = new DatabaseManager(jdbcDriverClassName, jdbcLogin, jdbcPass, jdbcUrl);
   }
 
   @Override
@@ -71,7 +81,7 @@ public class Res extends RESTService {
 
   @Api
   @SwaggerDefinition(
-      info = @Info(title = "314", version = "0.1.0",
+      info = @Info(title = "314", version = "",
           description = "",
           termsOfService = "",
           contact = @Contact(name = "", email = "CAEAddress@gmail.com") ,
